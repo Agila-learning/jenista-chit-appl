@@ -419,7 +419,7 @@ export const TrackChitSection: React.FC = () => {
           /* State 2: Active Chit Tracked Display Card */
           <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl shadow-slate-200/70 border border-neutral-200/90 overflow-hidden animate-in fade-in zoom-in-95 duration-300">
             {/* Header Member Banner */}
-            <div className="bg-gradient-to-r from-emerald-950 via-teal-900 to-slate-900 p-6 sm:p-8 text-white relative">
+            <div className="bg-gradient-to-r from-[#064E3B] via-[#0A5C47] to-[#064E3B] p-6 sm:p-8 text-white relative">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <div className="w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl font-black text-emerald-300 shadow-inner">
@@ -721,7 +721,7 @@ export const TrackChitSection: React.FC = () => {
       {showSchemeModal && activeChit && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/70 backdrop-blur-sm animate-in fade-in">
           <div className="bg-white w-full max-w-xl rounded-3xl shadow-2xl border border-slate-200 overflow-hidden relative">
-            <div className="bg-gradient-to-r from-slate-900 to-emerald-950 text-white p-6 relative">
+            <div className="bg-gradient-to-r from-[#064E3B] to-[#0A5C47] text-white p-6 relative">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <div className="w-9 h-9 rounded-xl bg-white/10 flex items-center justify-center">

@@ -139,12 +139,12 @@ export const HeroSection: React.FC = () => {
                 </div>
 
                 {/* Bottom Goal Milestone Badges */}
-                <div className="absolute bottom-4 left-4 right-4 bg-[#073B32]/90 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-white/20 text-white flex items-center justify-between shadow-lg">
+                <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl border border-amber-200/90 text-[#073B32] flex items-center justify-between shadow-lg">
                   <div className="flex items-center gap-2">
                     <Sparkles className="w-4 h-4 text-[#D8AB4B]" />
-                    <span className="text-xs font-bold text-white">Achieve Real Milestones</span>
+                    <span className="text-xs font-bold text-[#064E3B]">Achieve Real Milestones</span>
                   </div>
-                  <span className="text-[11px] font-medium text-[#F8F1E5]">Home • Car • Wedding • Education</span>
+                  <span className="text-[11px] font-semibold text-slate-600">Home • Car • Wedding • Education</span>
                 </div>
               </div>
             </div>

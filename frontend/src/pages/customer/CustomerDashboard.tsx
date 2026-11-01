@@ -84,6 +84,7 @@ export const CustomerDashboard = () => {
   const [showStatementsModal, setShowStatementsModal] = useState(false);
   const [statementFilter, setStatementFilter] = useState<'ALL' | 'CASH' | 'ONLINE'>('ALL');
   const [statementSearch, setStatementSearch] = useState('');
+  const [selectedChitGroupFilter, setSelectedChitGroupFilter] = useState<string>('ALL');
 
   const [isRestricted, setIsRestricted] = useState(false);
 
@@ -1749,18 +1750,67 @@ export const CustomerDashboard = () => {
                 </div>
               )}
 
-              <h3 className="text-lg font-semibold text-primary-900 flex items-center">
-                <Layers className="w-5 h-5 mr-2 text-primary-600" />
-                My Active Chit Groups
-              </h3>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <h3 className="text-lg font-semibold text-primary-900 flex items-center">
+                  <Layers className="w-5 h-5 mr-2 text-primary-600" />
+                  My Active Chit Groups
+                </h3>
+
+                {myChits.length > 1 && (
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 max-w-full">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedChitGroupFilter('ALL')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer ${
+                        selectedChitGroupFilter === 'ALL'
+                          ? 'bg-[#064E3B] text-white shadow-xs'
+                          : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'
+                      }`}
+                    >
+                      All Groups ({myChits.length})
+                    </button>
+                    {myChits.map((c: any, cIdx: number) => {
+                      const gId = c.groupId || c.groupName || `grp-${cIdx}`;
+                      const isSel = selectedChitGroupFilter === gId;
+                      return (
+                        <button
+                          key={gId}
+                          type="button"
+                          onClick={() => setSelectedChitGroupFilter(gId)}
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all shrink-0 cursor-pointer flex items-center gap-1.5 ${
+                            isSel
+                              ? 'bg-[#064E3B] text-white shadow-xs'
+                              : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50'
+                          }`}
+                        >
+                          <span>{c.groupName || c.groupId}</span>
+                          <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono ${
+                            isSel ? 'bg-white/20 text-white' : 'bg-slate-100 text-slate-600'
+                          }`}>
+                            #{c.ticketNumber || '1'}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
               
-              {myChits.length === 0 ? (
-                <div className="card p-8 text-center text-neutral-500 border-dashed border-neutral-300 bg-neutral-50">
-                  <p>You have not been assigned to any chit groups yet.</p>
-                  <p className="text-sm mt-1">Please contact your administrator or wait for approval.</p>
-                </div>
-              ) : (
-                myChits.map((chit, index) => {
+              {(() => {
+                const displayedChits = selectedChitGroupFilter === 'ALL'
+                  ? myChits
+                  : myChits.filter((c: any) => (c.groupId || c.groupName) === selectedChitGroupFilter);
+
+                if (myChits.length === 0) {
+                  return (
+                    <div className="card p-8 text-center text-neutral-500 border-dashed border-neutral-300 bg-neutral-50">
+                      <p>You have not been assigned to any chit groups yet.</p>
+                      <p className="text-sm mt-1">Please contact your administrator or wait for approval.</p>
+                    </div>
+                  );
+                }
+
+                return displayedChits.map((chit, index) => {
                   const scheduleSummary = buildCustomerChitSchedule({
                     customer: customerData || user,
                     chit,
@@ -2205,8 +2255,8 @@ export const CustomerDashboard = () => {
                     </div>
                   </div>
                   );
-                })
-              )}
+                });
+              })()}
             </div>
 
             {/* Transaction History Sidebar */}

@@ -76,7 +76,7 @@ export const AboutUsSection = () => {
                 alt="Happy Indian Family Planning Finances" 
                 className="w-full h-[420px] sm:h-[480px] object-cover object-center group-hover:scale-105 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/30 via-transparent to-transparent" />
               
               {/* Overlay Stat Capsule 1: Disbursals */}
               <div className="absolute top-4 right-4 bg-white/95 backdrop-blur-md px-4 py-2.5 rounded-2xl shadow-lg border border-white/40">
@@ -85,12 +85,12 @@ export const AboutUsSection = () => {
               </div>
 
               {/* Overlay Stat Capsule 2: Happy Subscribers */}
-              <div className="absolute bottom-4 left-4 right-4 bg-slate-900/90 backdrop-blur-xl p-4 rounded-2xl border border-white/20 text-white flex items-center justify-between">
+              <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-xl p-4 rounded-2xl border border-emerald-200/90 text-slate-800 flex items-center justify-between shadow-lg">
                 <div>
-                  <span className="text-xs text-slate-300 block">Subscribers Milestone</span>
-                  <span className="text-lg font-extrabold text-white">2,00,000+ Families Enrolled</span>
+                  <span className="text-xs text-slate-500 block font-medium">Subscribers Milestone</span>
+                  <span className="text-lg font-black text-[#064E3B]">2,00,000+ Families Enrolled</span>
                 </div>
-                <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 border border-emerald-400/30 flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#064E3B] border border-emerald-200 flex items-center justify-center shadow-xs">
                   <Users className="w-5 h-5" />
                 </div>
               </div>

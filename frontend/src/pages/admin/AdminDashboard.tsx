@@ -31,7 +31,9 @@ import {
   Printer,
   FileSpreadsheet,
   AlertTriangle,
-  Filter
+  Filter,
+  Award,
+  ArrowRight
 } from 'lucide-react';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip as RechartsTooltip } from 'recharts';
 import { formatCurrency, formatDate } from '../../utils/format';
@@ -94,6 +96,13 @@ export const AdminDashboard = () => {
   const [pendingCustomerApprovals, setPendingCustomerApprovals] = useState<any[]>([]);
   const [paymentActionInProgress, setPaymentActionInProgress] = useState<string | null>(null);
   const [isNoticeDismissed, setIsNoticeDismissed] = useState(false);
+  const [withdrawalRequests, setWithdrawalRequests] = useState<any[]>(() => {
+    try {
+      return JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
+    } catch {
+      return [];
+    }
+  });
 
   // Partial Payments Calculations
   const partialReceipts = staffReceiptsList.filter((r: any) => r.isPartial || r.status === 'PARTIAL');
@@ -586,8 +595,32 @@ export const AdminDashboard = () => {
       } catch {
         setStaffReceiptsList([]);
       }
+      try {
+        const freshWithdrawals = JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
+        setWithdrawalRequests(Array.isArray(freshWithdrawals) ? freshWithdrawals : []);
+      } catch {
+        setWithdrawalRequests([]);
+      }
     };
     window.addEventListener('storage', handleStorageChange);
+
+    // Fetch live prize withdrawals from MongoDB backend
+    fetchClient('/payments/withdrawals')
+      .then((res: any) => {
+        if (res && res.data && Array.isArray(res.data)) {
+          const localSaved = JSON.parse(localStorage.getItem('withdrawalRequests') || '[]');
+          const map = new Map();
+          localSaved.forEach((w: any) => map.set(w.id || `${w.customerId}_${w.groupId}`, w));
+          res.data.forEach((w: any) => {
+            const k = w.id || w._id || `${w.customerId}_${w.groupId}`;
+            if (!map.has(k)) map.set(k, w);
+          });
+          const merged = Array.from(map.values());
+          localStorage.setItem('withdrawalRequests', JSON.stringify(merged));
+          setWithdrawalRequests(merged);
+        }
+      })
+      .catch(() => {});
 
     // Fetch live groups from MongoDB backend if available
     fetchClient('/chit-groups')
@@ -3907,6 +3940,138 @@ export const AdminDashboard = () => {
           <Gavel className="w-16 h-16 text-[#eedef8]/60 absolute -right-1 -bottom-1 pointer-events-none group-hover:scale-110 transition-transform" />
         </div>
       </div>
+
+      {/* 2.3. Prize Money Disbursement Requests & Tracker */}
+      {(() => {
+        const pendingClaims = withdrawalRequests.filter((w: any) => w.status === 'PENDING_ADMIN_DISBURSAL');
+        const approvedClaims = withdrawalRequests.filter((w: any) => w.status === 'DISBURSED');
+
+        return (
+          <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-slate-100 gap-3">
+              <div className="flex items-start sm:items-center gap-3">
+                <div className="p-2.5 bg-gradient-to-br from-amber-50 to-orange-50 text-amber-700 rounded-xl border border-amber-200 shrink-0">
+                  <Award className="w-5 h-5" />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h2 className="font-bold text-slate-900 text-base">
+                      Prize Disbursement Claims & Approvals
+                    </h2>
+                    {pendingClaims.length > 0 ? (
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-rose-100 text-rose-800 border border-rose-200 animate-pulse">
+                        {pendingClaims.length} Pending Claim{pendingClaims.length !== 1 ? 's' : ''}
+                      </span>
+                    ) : (
+                      <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                        All Claims Settled
+                      </span>
+                    )}
+                  </div>
+                  <p className="text-xs text-slate-500 mt-0.5">
+                    Customer prize payout claims from digital auctions & scheduled turn winners.
+                  </p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => navigate('/admin/payments')}
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-xs shadow-xs transition-all active:scale-95 cursor-pointer self-start sm:self-center"
+              >
+                <span>Manage in Payments Desk</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+
+            {/* Pending Requests List */}
+            {pendingClaims.length > 0 ? (
+              <div className="space-y-3">
+                <div className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
+                  <span>Awaiting Disbursal Verification ({pendingClaims.length})</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+                  {pendingClaims.map((claim: any, idx: number) => (
+                    <div 
+                      key={claim.id || idx} 
+                      className="p-4 rounded-xl border border-amber-200 bg-amber-50/30 hover:bg-amber-50/60 transition-all flex flex-col justify-between space-y-3"
+                    >
+                      <div>
+                        <div className="flex items-center justify-between">
+                          <span className="text-[10px] font-mono font-bold bg-amber-100 text-amber-900 px-2 py-0.5 rounded">
+                            {claim.groupId} #{claim.ticketNumber || '1'}
+                          </span>
+                          <span className="text-xs font-black text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded">
+                            {formatCurrency(Number(claim.eligibleAmount || claim.chitValue * 0.95))}
+                          </span>
+                        </div>
+                        <h4 className="font-extrabold text-sm text-slate-900 mt-2">
+                          {claim.customerName}
+                        </h4>
+                        <p className="text-xs text-slate-500 font-mono">
+                          {claim.mobile || claim.phone || 'Phone not provided'}
+                        </p>
+                        <div className="mt-2 text-xs text-slate-600 space-y-0.5 bg-white/80 p-2 rounded-lg border border-amber-100 font-mono">
+                          <p>Method: <strong className="text-slate-800">{claim.payoutMethod || 'Bank Transfer'}</strong></p>
+                          {claim.payoutDetails?.accountNumber && (
+                            <p>Acc: <strong>{claim.payoutDetails.accountNumber}</strong> ({claim.payoutDetails.ifsc || ''})</p>
+                          )}
+                          {claim.payoutDetails?.upiId && (
+                            <p>UPI: <strong>{claim.payoutDetails.upiId}</strong></p>
+                          )}
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => navigate('/admin/payments')}
+                        className="w-full py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs rounded-lg shadow-xs transition-all flex items-center justify-center gap-1.5 cursor-pointer"
+                      >
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Disburse Prize Money</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : approvedClaims.length > 0 ? (
+              <div className="space-y-2">
+                <div className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                  Recently Disbursed Prizes ({approvedClaims.length})
+                </div>
+                <div className="divide-y divide-slate-100 border border-slate-100 rounded-xl overflow-hidden bg-slate-50/50">
+                  {approvedClaims.slice(0, 3).map((item: any, aIdx: number) => (
+                    <div key={item.id || aIdx} className="p-3 flex items-center justify-between text-xs">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center shrink-0">
+                          <Award className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <span className="font-bold text-slate-800 block">{item.customerName}</span>
+                          <span className="text-slate-500 text-[11px] font-mono">
+                            {item.groupName || item.groupId} #{item.ticketNumber || '1'} · Ref: {item.disbursedRef || item.transactionReference || 'DISBURSED'}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-black text-emerald-700 block">
+                          {formatCurrency(Number(item.eligibleAmount || 0))}
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          {item.disbursedAt ? formatDate(item.disbursedAt) : 'Completed'}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <div className="p-4 rounded-xl bg-slate-50 border border-slate-100 text-center text-xs text-slate-500">
+                No prize money withdrawal requests submitted yet. When a winner submits a claim from their dashboard, it will appear here for immediate review.
+              </div>
+            )}
+          </div>
+        );
+      })()}
 
       {/* 2.5. Bank Allocation & Member Routing Overview */}
       <div className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-2xs space-y-4">

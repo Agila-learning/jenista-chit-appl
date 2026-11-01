@@ -44,10 +44,10 @@ export const ChitGroupList = () => {
   const [menuPos, setMenuPos] = useState({ top: 0, right: 0 });
 
   useEffect(() => {
-    if (location.state && (location.state as any).openCreate) {
+    if ((location.state && (location.state as any).openCreate) || location.search.includes('action=create')) {
       setIsModalOpen(true);
     }
-  }, [location.state]);
+  }, [location.state, location.search]);
 
   useEffect(() => {
     const syncGroups = () => {

@@ -589,26 +589,42 @@ export const CustomerChitScheduleScreen = () => {
     );
   }
 
-  const isStaffOrAdmin = user?.role === 'ADMIN' || user?.role === 'STAFF';
-  const isCustomerView = user?.role === 'CUSTOMER' || !isStaffOrAdmin || window.location.pathname.startsWith('/customer/');
+  const isAdminOrStaff = user?.role === 'ADMIN' || 
+    user?.role === 'SUPER_ADMIN' || 
+    user?.role === 'STAFF' || 
+    user?.role === 'BRANCH_MANAGER' || 
+    user?.role === 'ACCOUNTANT' || 
+    user?.role === 'COLLECTION_AGENT';
+
+  const isStaffOrAdmin = isAdminOrStaff;
+  const isOnAdminRoute = window.location.pathname.startsWith('/admin/');
+  const isCustomerView = !isOnAdminRoute && user?.role === 'CUSTOMER';
+
+  const handleBackNavigation = () => {
+    if (isAdminOrStaff || isOnAdminRoute) {
+      navigate('/admin/dashboard');
+    } else {
+      navigate('/customer/dashboard');
+    }
+  };
 
   return (
-    <div className={`space-y-6 pb-12 max-w-7xl mx-auto animate-in fade-in duration-200 ${isCustomerView ? 'pt-0 px-4 sm:px-6' : ''}`}>
+    <div className={`space-y-6 pb-12 max-w-7xl mx-auto animate-in fade-in duration-200 ${isCustomerView ? 'pt-2 px-4 sm:px-6' : ''}`}>
       
-      {/* Customer Dedicated Portal Header (When accessed from Customer Dashboard / Customer Login) */}
+      {/* Customer Dedicated Portal Header (Only when accessed directly on customer standalone route) */}
       {isCustomerView && (
-        <header className="bg-white border-b border-neutral-200 sticky top-0 z-40 shadow-xs mb-6 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3.5 rounded-2xl">
+        <header className="bg-white/95 backdrop-blur-md border-b border-neutral-200 sticky top-0 z-30 shadow-xs mb-6 -mx-4 sm:-mx-6 px-4 sm:px-6 py-3.5">
           <div className="flex justify-between items-center">
             <div className="flex items-center space-x-3">
               <button
-                onClick={() => navigate('/customer/dashboard')}
+                onClick={handleBackNavigation}
                 className="p-2 text-primary-900 hover:bg-neutral-100 rounded-xl transition-colors flex items-center gap-1.5 font-bold text-xs border border-neutral-200 shadow-2xs cursor-pointer"
-                title="Return to Customer Dashboard"
+                title="Return to Dashboard"
               >
                 <ArrowLeft className="w-4 h-4" />
-                <span>My Dashboard</span>
+                <span>{isAdminOrStaff ? 'Admin Dashboard' : 'My Dashboard'}</span>
               </button>
-              <img src="/assets/Chit logo.jpg.jpeg" alt="Jenista Chits Logo" className="h-9 w-9 object-contain rounded-lg" />
+              <img src="/assets/Chit logo.jpg.jpeg" alt="Jenista Chits Logo" className="h-9 w-9 object-contain rounded-lg shadow-2xs" />
               <div>
                 <span className="font-extrabold text-base sm:text-lg text-primary-900 tracking-tight block leading-tight">Jenista Chits</span>
                 <span className="text-[10px] text-amber-800 font-bold tracking-wider uppercase block">Customer Passbook & Full Pre-Chart</span>
@@ -635,15 +651,9 @@ export const CustomerChitScheduleScreen = () => {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-2xs">
         <div className="flex items-center gap-3.5">
           <button
-            onClick={() => {
-              if (isCustomerView) {
-                navigate('/customer/dashboard');
-              } else {
-                navigate(-1);
-              }
-            }}
+            onClick={handleBackNavigation}
             className="p-2.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-colors shrink-0 cursor-pointer"
-            title="Go back"
+            title="Go back to Dashboard"
           >
             <ArrowLeft className="w-5 h-5" />
           </button>

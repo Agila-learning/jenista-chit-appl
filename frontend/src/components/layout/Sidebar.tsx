@@ -19,7 +19,8 @@ import {
   UserCheck,
   UserPlus,
   LogOut,
-  Calculator
+  Calculator,
+  Layers
 } from 'lucide-react';
 import { useAuth } from '../../store/AuthContext';
 
@@ -152,8 +153,8 @@ export const Sidebar = ({
 
   const isStaff = user?.role === 'STAFF';
 
-  // Primary Navigation
-  const adminMainNavigation: NavItem[] = [
+  // 1. Core Section
+  const adminCoreNav: NavItem[] = [
     { name: 'Dashboard', href: '/admin/dashboard', icon: LayoutDashboard },
     { 
       name: 'Members', 
@@ -166,20 +167,32 @@ export const Sidebar = ({
         { name: 'Registration Approvals', href: '/admin/customers/approvals' }
       ]
     },
+  ];
+
+  // 2. Dedicated Chit Groups Section
+  const adminGroupNav: NavItem[] = [
     { 
-      name: 'Website Leads', 
-      href: '/admin/leads', 
-      icon: UserPlus,
-      badge: pendingLeadsCount
+      name: 'Chit Groups', 
+      href: '/admin/chit-groups', 
+      icon: Layers,
+      subItems: [
+        { name: 'All Chit Groups', href: '/admin/chit-groups' },
+        { name: '+ Create Group', href: '/admin/chit-groups?action=create' },
+        { name: 'Schemes & Plans', href: '/admin/manage-plans' }
+      ]
     },
+    { name: 'Schemes & Plans', href: '/admin/manage-plans', icon: Gavel },
+    { name: 'Chit Calculator', href: '/admin/calculator', icon: Calculator },
+  ];
+
+  // 3. Finance & Operations Section
+  const adminFinanceNav: NavItem[] = [
     { 
       name: 'Payments', 
       href: '/admin/payments', 
       icon: CreditCard,
       badge: pendingPaymentsCount
     },
-    { name: 'Chit Calculator', href: '/admin/calculator', icon: Calculator },
-    { name: 'Schemes', href: '/admin/manage-plans', icon: Gavel },
     { name: 'Manage Bank', href: '/admin/banks', icon: Landmark },
     { name: 'Ledger', href: '/admin/ledger', icon: FileText },
     { 
@@ -191,6 +204,12 @@ export const Sidebar = ({
       ]
     },
     { 
+      name: 'Website Leads', 
+      href: '/admin/leads', 
+      icon: UserPlus,
+      badge: pendingLeadsCount
+    },
+    { 
       name: 'Notifications', 
       href: '/admin/notifications', 
       icon: Bell,
@@ -198,17 +217,16 @@ export const Sidebar = ({
     },
   ];
 
-  // Management Navigation
-  const adminManagementNavigation: NavItem[] = [
-    { name: 'Settings', href: '/admin/settings', icon: Settings },
-    { name: 'User Management', href: '/admin/customers/approvals', icon: UserCheck },
+  // 4. Management Section
+  const adminManagementNav: NavItem[] = [
     { name: 'Receipt Desk', href: '/admin/receipts', icon: Receipt },
+    { name: 'User Management', href: '/admin/customers/approvals', icon: UserCheck },
+    { name: 'Settings', href: '/admin/settings', icon: Settings },
   ];
 
-  const staffNavigation: NavItem[] = [
+  // Staff Navigation breakdown
+  const staffCoreNav: NavItem[] = [
     { name: 'Staff Dashboard', href: '/staff/dashboard', icon: LayoutDashboard },
-    { name: 'Chit Calculator', href: '/staff/calculator', icon: Calculator },
-    { name: 'Raise Receipt', href: '/admin/receipts', icon: Receipt },
     { 
       name: 'Customers', 
       href: '/admin/customers', 
@@ -218,6 +236,15 @@ export const Sidebar = ({
         { name: 'Customer Directory', href: '/admin/customers' },
       ]
     },
+  ];
+
+  const staffGroupNav: NavItem[] = [
+    { name: 'Chit Groups', href: '/admin/chit-groups', icon: Layers },
+    { name: 'Chit Calculator', href: '/staff/calculator', icon: Calculator },
+  ];
+
+  const staffFinanceNav: NavItem[] = [
+    { name: 'Raise Receipt', href: '/admin/receipts', icon: Receipt },
     { 
       name: 'Reports', 
       href: '/admin/reports/non-payers', 
@@ -228,10 +255,116 @@ export const Sidebar = ({
     },
   ];
 
-  const mainNav = isStaff ? staffNavigation : adminMainNavigation;
-  const mgmtNav = isStaff ? [] : adminManagementNavigation;
   // Active expansion state: mobile drawer open or desktop expanded
   const isExpanded = isMobileOpen || !isCollapsed;
+
+  const renderNavSection = (items: NavItem[], sectionTitle?: string, isGoldTheme?: boolean) => {
+    if (items.length === 0) return null;
+    return (
+      <div className="space-y-1 pt-2.5 first:pt-0 border-t first:border-t-0 border-slate-800/60">
+        {isExpanded && sectionTitle && (
+          <div className="px-3 pb-1.5 flex items-center justify-between animate-in fade-in duration-150">
+            <span className={cn(
+              "text-[10px] font-black tracking-widest uppercase",
+              isGoldTheme ? "text-amber-400" : "text-slate-400"
+            )}>
+              {sectionTitle}
+            </span>
+          </div>
+        )}
+        {items.map((item) => {
+          const isActive = location.pathname === item.href || (item.href !== '/admin/dashboard' && item.href !== '/staff/dashboard' && location.pathname.startsWith(item.href));
+          return (
+            <div key={item.name} className="flex flex-col">
+              <NavLink
+                to={item.subItems ? '#' : item.href}
+                onClick={(e) => {
+                  if (item.subItems) {
+                    e.preventDefault();
+                    if (isCollapsed && onToggle) onToggle();
+                    setOpenSubmenu(openSubmenu === item.name ? null : item.name);
+                  } else {
+                    setIsMobileOpen?.(false);
+                  }
+                }}
+                title={!isExpanded ? item.name : undefined}
+                className={cn(
+                  "flex items-center rounded-xl transition-all font-medium text-xs tracking-wide relative group",
+                  isExpanded ? "justify-between px-3 py-2.5" : "justify-center h-11 w-11 mx-auto",
+                  isActive
+                    ? isGoldTheme
+                      ? "bg-[#b8860b]/20 text-[#e6c687] border border-[#b8860b]/40 font-semibold shadow-2xs"
+                      : "bg-blue-600/20 text-blue-300 border border-blue-500/40 font-semibold shadow-2xs"
+                    : "text-[#8b9bb4] hover:text-white hover:bg-white/[0.05]"
+                )}
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <item.icon className={cn(
+                    "w-4 h-4 shrink-0 transition-colors",
+                    isActive 
+                      ? (isGoldTheme ? "text-[#e6c687]" : "text-blue-400") 
+                      : "text-[#8b9bb4] group-hover:text-white"
+                  )} />
+                  {isExpanded && <span className="truncate">{item.name}</span>}
+                </div>
+
+                {/* Collapsed dot badge */}
+                {!isExpanded && item.badge !== undefined && item.badge > 0 && (
+                  <span className="w-2 h-2 rounded-full bg-blue-400 absolute top-2 right-2 animate-pulse" />
+                )}
+
+                {/* Expanded pill badge and chevron */}
+                {isExpanded && (
+                  <div className="flex items-center gap-1.5 shrink-0 animate-in fade-in duration-150">
+                    {item.badge !== undefined && item.badge > 0 && (
+                      <span className={cn(
+                        "text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-xs",
+                        isActive 
+                          ? "bg-blue-600 text-white" 
+                          : "bg-blue-500 text-white animate-pulse"
+                      )}>
+                        {item.badge}
+                      </span>
+                    )}
+                    {item.subItems && (
+                      <ChevronDown className={cn(
+                        "w-3.5 h-3.5 text-[#8b9bb4] transition-transform duration-200",
+                        openSubmenu === item.name ? "rotate-180" : ""
+                      )} />
+                    )}
+                  </div>
+                )}
+              </NavLink>
+
+              {/* Expandable Submenu */}
+              {isExpanded && item.subItems && openSubmenu === item.name && (
+                <div className="ml-7 mt-1 pl-3 border-l border-slate-800 space-y-1 py-1 animate-in fade-in duration-150">
+                  {item.subItems.map(subItem => {
+                    const isSubActive = location.pathname === subItem.href || location.pathname + location.search === subItem.href;
+                    return (
+                      <NavLink
+                        key={subItem.name}
+                        to={subItem.href}
+                        onClick={() => setIsMobileOpen?.(false)}
+                        className={cn(
+                          "block py-1.5 px-2.5 text-[11px] rounded-lg transition-colors font-medium",
+                          isSubActive 
+                            ? "text-amber-400 font-bold bg-amber-400/10" 
+                            : "text-slate-400 hover:text-white hover:bg-slate-800/40"
+                        )}
+                      >
+                        {subItem.name}
+                      </NavLink>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <>
@@ -307,135 +440,20 @@ export const Sidebar = ({
         </div>
 
         {/* Scrollable Navigation Body */}
-        <div className="flex-1 overflow-y-auto px-2.5 py-3 space-y-4 scrollbar-thin scrollbar-thumb-slate-800 overflow-x-hidden">
-          {/* Main Navigation */}
-          <div className="space-y-1">
-            {mainNav.map((item) => {
-              const isActive = location.pathname === item.href || (item.href !== '/admin/dashboard' && location.pathname.startsWith(item.href));
-
-              return (
-                <div key={item.name} className="flex flex-col">
-                  <NavLink
-                    to={item.subItems ? '#' : item.href}
-                    onClick={(e) => {
-                      if (item.subItems) {
-                        e.preventDefault();
-                        if (isCollapsed && onToggle) onToggle();
-                        setOpenSubmenu(openSubmenu === item.name ? null : item.name);
-                      } else {
-                        setIsMobileOpen?.(false);
-                      }
-                    }}
-                    title={!isExpanded ? item.name : undefined}
-                    className={cn(
-                      "flex items-center rounded-xl transition-all font-medium text-xs tracking-wide relative group",
-                      isExpanded ? "justify-between px-3 py-2.5" : "justify-center h-11 w-11 mx-auto",
-                      isActive
-                        ? "bg-blue-600/20 text-blue-300 border border-blue-500/40 font-semibold shadow-2xs"
-                        : "text-[#8b9bb4] hover:text-white hover:bg-white/[0.05]"
-                    )}
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <item.icon className={cn(
-                        "w-4 h-4 shrink-0 transition-colors",
-                        isActive ? "text-blue-400" : "text-[#8b9bb4] group-hover:text-white"
-                      )} />
-                      {isExpanded && <span className="truncate">{item.name}</span>}
-                    </div>
-
-                    {/* Collapsed dot badge */}
-                    {!isExpanded && item.badge !== undefined && item.badge > 0 && (
-                      <span className="w-2 h-2 rounded-full bg-blue-400 absolute top-2 right-2 animate-pulse" />
-                    )}
-
-                    {/* Expanded pill badge and chevron */}
-                    {isExpanded && (
-                      <div className="flex items-center gap-1.5 shrink-0 animate-in fade-in duration-150">
-                        {item.badge !== undefined && item.badge > 0 && (
-                          <span className={cn(
-                            "text-[10px] font-black px-1.5 py-0.5 rounded-full shadow-xs",
-                            isActive 
-                              ? "bg-blue-600 text-white" 
-                              : "bg-blue-500 text-white animate-pulse"
-                          )}>
-                            {item.badge}
-                          </span>
-                        )}
-                        {item.subItems && (
-                          <ChevronDown className={cn(
-                            "w-3.5 h-3.5 text-[#8b9bb4] transition-transform duration-200",
-                            openSubmenu === item.name ? "rotate-180" : ""
-                          )} />
-                        )}
-                      </div>
-                    )}
-                  </NavLink>
-
-                  {/* Expandable Submenu */}
-                  {isExpanded && item.subItems && openSubmenu === item.name && (
-                    <div className="ml-7 mt-1 pl-3 border-l border-slate-800 space-y-1 py-1 animate-in fade-in duration-150">
-                      {item.subItems.map(subItem => {
-                        const isSubActive = location.pathname === subItem.href;
-                        return (
-                          <NavLink
-                            key={subItem.name}
-                            to={subItem.href}
-                            onClick={() => setIsMobileOpen?.(false)}
-                            className={cn(
-                              "block py-1.5 px-2.5 text-[11px] rounded-lg transition-colors font-medium",
-                              isSubActive 
-                                ? "text-amber-400 font-bold bg-amber-400/10" 
-                                : "text-slate-400 hover:text-white hover:bg-slate-800/40"
-                            )}
-                          >
-                            {subItem.name}
-                          </NavLink>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Management Section */}
-          {mgmtNav.length > 0 && (
-            <div className="space-y-1 pt-2 border-t border-slate-800/60">
-              {isExpanded && (
-                <div className="px-3 pb-1.5 animate-in fade-in duration-150">
-                  <span className="text-[10px] font-bold tracking-widest uppercase text-slate-500">
-                    Management
-                  </span>
-                </div>
-              )}
-              {mgmtNav.map((item) => {
-                const isActive = location.pathname.startsWith(item.href);
-                return (
-                  <NavLink
-                    key={item.name}
-                    to={item.href}
-                    onClick={() => setIsMobileOpen?.(false)}
-                    title={!isExpanded ? item.name : undefined}
-                    className={cn(
-                      "flex items-center rounded-xl transition-all font-medium text-xs tracking-wide group",
-                      isExpanded ? "justify-between px-3 py-2.5" : "justify-center h-11 w-11 mx-auto",
-                      isActive
-                        ? "bg-[#b8860b]/20 text-[#e6c687] border border-[#b8860b]/40 font-semibold shadow-2xs"
-                        : "text-[#8b9bb4] hover:text-white hover:bg-white/[0.05]"
-                    )}
-                  >
-                    <div className="flex items-center gap-3 min-w-0">
-                      <item.icon className={cn(
-                        "w-4 h-4 shrink-0 transition-colors",
-                        isActive ? "text-[#e6c687]" : "text-[#8b9bb4] group-hover:text-white"
-                      )} />
-                      {isExpanded && <span className="truncate">{item.name}</span>}
-                    </div>
-                  </NavLink>
-                );
-              })}
-            </div>
+        <div className="flex-1 overflow-y-auto px-2.5 py-3 space-y-3 scrollbar-thin scrollbar-thumb-slate-800 overflow-x-hidden">
+          {isStaff ? (
+            <>
+              {renderNavSection(staffCoreNav)}
+              {renderNavSection(staffGroupNav, "CHIT GROUPS", true)}
+              {renderNavSection(staffFinanceNav, "FINANCE & OPS")}
+            </>
+          ) : (
+            <>
+              {renderNavSection(adminCoreNav)}
+              {renderNavSection(adminGroupNav, "CHIT GROUPS", true)}
+              {renderNavSection(adminFinanceNav, "FINANCE & OPS")}
+              {renderNavSection(adminManagementNav, "MANAGEMENT")}
+            </>
           )}
 
           {/* Indian Architectural Heritage Vignette */}
