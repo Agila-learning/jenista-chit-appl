@@ -16,7 +16,7 @@ export const FloatingWhatsApp: React.FC = () => {
   const [customInput, setCustomInput] = useState('');
   const [isSearching, setIsSearching] = useState(false);
 
-  const phoneNumber = '919444667411';
+  const phoneNumber = '917094295556';
 
   // Localized dictionaries
   const i18n = {

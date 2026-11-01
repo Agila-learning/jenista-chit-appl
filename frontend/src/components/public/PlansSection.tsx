@@ -177,41 +177,45 @@ export const PlansSection: React.FC = () => {
           
           {/* Plan 1: FIXED CHIT PLAN */}
           {(activePlanTab === 'ALL' || activePlanTab === 'FIXED') && (
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:border-blue-300 group">
-              <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-slate-900 p-6 sm:p-7 text-white relative">
+            <div className="relative bg-white/95 backdrop-blur-md rounded-3xl border border-blue-100 shadow-xl shadow-blue-900/5 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/10 hover:border-blue-300 group">
+              {/* Subtle background glow effect */}
+              <div className="absolute -top-16 -right-16 w-48 h-48 bg-gradient-to-br from-blue-200/50 via-sky-100/30 to-transparent rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+              <div className="absolute top-1/2 -left-20 w-40 h-40 bg-gradient-to-tr from-sky-200/40 via-blue-100/20 to-transparent rounded-full blur-2xl pointer-events-none" />
+
+              <div className="relative bg-gradient-to-br from-blue-50/90 via-sky-50/60 to-white p-6 sm:p-7 border-b border-blue-100/80">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-blue-300 shadow-inner group-hover:scale-105 transition-transform">
-                      <Lock className="w-6 h-6 text-blue-300" />
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-blue-600 to-sky-600 text-white flex items-center justify-center shadow-md shadow-blue-500/20 group-hover:scale-105 transition-transform">
+                      <Lock className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-blue-300 bg-blue-500/20 px-2 py-0.5 rounded-full border border-blue-400/20">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-blue-700 bg-blue-100/90 px-2.5 py-0.5 rounded-full border border-blue-200">
                         Zero Bid Risk
                       </span>
-                      <h3 className="text-xl sm:text-2xl font-black text-white mt-1">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
                         Fixed Chit Plan
                       </h3>
                     </div>
                   </div>
                 </div>
 
-                <p className="mt-3.5 text-xs text-blue-100/90 leading-relaxed">
+                <p className="mt-3.5 text-xs text-slate-600 leading-relaxed font-medium">
                   Monthly transparent draw selects one member to receive the full 100% chit value without bidding discount.
                 </p>
 
-                <div className="mt-5 pt-4 border-t border-white/15 grid grid-cols-2 gap-2 text-xs">
-                  <div>
-                    <span className="text-blue-200/80 block text-[11px]">Monthly Installment</span>
-                    <strong className="text-base font-black text-white">₹{currentSlab.fixedMonthly.toLocaleString('en-IN')}/mo</strong>
+                <div className="mt-5 pt-4 border-t border-blue-100 grid grid-cols-2 gap-2 text-xs">
+                  <div className="bg-white/80 rounded-xl p-2.5 border border-blue-100/80 shadow-xs">
+                    <span className="text-slate-500 block text-[11px] font-semibold">Monthly Installment</span>
+                    <strong className="text-base font-black text-slate-900">₹{currentSlab.fixedMonthly.toLocaleString('en-IN')}/mo</strong>
                   </div>
-                  <div>
-                    <span className="text-blue-200/80 block text-[11px]">Payout Benefit</span>
-                    <strong className="text-base font-black text-emerald-300">100% Face Value</strong>
+                  <div className="bg-emerald-50/80 rounded-xl p-2.5 border border-emerald-100/80 shadow-xs">
+                    <span className="text-emerald-700 block text-[11px] font-semibold">Payout Benefit</span>
+                    <strong className="text-base font-black text-emerald-800">100% Face Value</strong>
                   </div>
                 </div>
               </div>
 
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+              <div className="p-6 flex-1 flex flex-col justify-between space-y-5 relative z-10">
                 <div>
                   <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3">
                     Key Features
@@ -250,7 +254,7 @@ export const PlansSection: React.FC = () => {
                   </button>
 
                   <a href="#contact" className="block">
-                    <button className="w-full h-11 rounded-xl bg-slate-900 hover:bg-blue-900 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md group-hover:scale-[1.01] cursor-pointer">
+                    <button className="w-full h-11 rounded-xl bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-700 hover:to-sky-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-blue-600/20 group-hover:scale-[1.01] cursor-pointer">
                       Enrol in Fixed Plan <ArrowRight className="w-4 h-4" />
                     </button>
                   </a>
@@ -261,41 +265,45 @@ export const PlansSection: React.FC = () => {
 
           {/* Plan 2: AUCTION CHIT PLAN */}
           {(activePlanTab === 'ALL' || activePlanTab === 'AUCTION') && (
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:border-indigo-300 group">
-              <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 sm:p-7 text-white relative">
+            <div className="relative bg-white/95 backdrop-blur-md rounded-3xl border border-indigo-100 shadow-xl shadow-indigo-900/5 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/10 hover:border-indigo-300 group">
+              {/* Subtle background glow effect */}
+              <div className="absolute -top-16 -right-16 w-48 h-48 bg-gradient-to-br from-indigo-200/50 via-purple-100/30 to-transparent rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+              <div className="absolute top-1/2 -left-20 w-40 h-40 bg-gradient-to-tr from-amber-200/40 via-indigo-100/20 to-transparent rounded-full blur-2xl pointer-events-none" />
+
+              <div className="relative bg-gradient-to-br from-indigo-50/90 via-purple-50/60 to-white p-6 sm:p-7 border-b border-indigo-100/90">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-indigo-300 shadow-inner group-hover:scale-105 transition-transform">
-                      <Gavel className="w-6 h-6 text-indigo-300" />
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white flex items-center justify-center shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform">
+                      <Gavel className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-300 bg-indigo-500/20 px-2 py-0.5 rounded-full border border-indigo-400/20">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-indigo-700 bg-indigo-100/90 px-2.5 py-0.5 rounded-full border border-indigo-200">
                         Dividend Earning
                       </span>
-                      <h3 className="text-xl sm:text-2xl font-black text-white mt-1">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
                         Auction Chit Plan
                       </h3>
                     </div>
                   </div>
                 </div>
 
-                <p className="mt-3.5 text-xs text-indigo-100/90 leading-relaxed">
+                <p className="mt-3.5 text-xs text-slate-600 leading-relaxed font-medium">
                   Monthly reverse bidding where members bid discounts. The discount is shared as dividends, lowering everyone's installment.
                 </p>
 
-                <div className="mt-5 pt-4 border-t border-white/15 grid grid-cols-2 gap-2 text-xs">
-                  <div>
-                    <span className="text-indigo-200/80 block text-[11px]">Avg. Effective Outflow</span>
-                    <strong className="text-base font-black text-emerald-300">~₹{currentSlab.auctionAvgMonthly.toLocaleString('en-IN')}/mo</strong>
+                <div className="mt-5 pt-4 border-t border-indigo-100 grid grid-cols-2 gap-2 text-xs">
+                  <div className="bg-emerald-50/80 rounded-xl p-2.5 border border-emerald-100/80 shadow-xs">
+                    <span className="text-emerald-700 block text-[11px] font-semibold">Avg. Effective Outflow</span>
+                    <strong className="text-base font-black text-emerald-800">~₹{currentSlab.auctionAvgMonthly.toLocaleString('en-IN')}/mo</strong>
                   </div>
-                  <div>
-                    <span className="text-indigo-200/80 block text-[11px]">Emergency Access</span>
-                    <strong className="text-base font-black text-white">Instant Bidding</strong>
+                  <div className="bg-white/80 rounded-xl p-2.5 border border-indigo-100/80 shadow-xs">
+                    <span className="text-slate-500 block text-[11px] font-semibold">Emergency Access</span>
+                    <strong className="text-base font-black text-slate-900">Instant Bidding</strong>
                   </div>
                 </div>
               </div>
 
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+              <div className="p-6 flex-1 flex flex-col justify-between space-y-5 relative z-10">
                 <div>
                   <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3">
                     Key Features
@@ -334,7 +342,7 @@ export const PlansSection: React.FC = () => {
                   </button>
 
                   <a href="#contact" className="block">
-                    <button className="w-full h-11 rounded-xl bg-indigo-700 hover:bg-indigo-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md group-hover:scale-[1.01] cursor-pointer">
+                    <button className="w-full h-11 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-indigo-600/20 group-hover:scale-[1.01] cursor-pointer">
                       Enrol in Auction Plan <ArrowRight className="w-4 h-4" />
                     </button>
                   </a>
@@ -345,41 +353,45 @@ export const PlansSection: React.FC = () => {
 
           {/* Plan 3: REGULAR CHIT PLAN */}
           {(activePlanTab === 'ALL' || activePlanTab === 'REGULAR') && (
-            <div className="bg-white rounded-3xl border border-slate-200 shadow-xl shadow-slate-200/50 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:border-emerald-300 group">
-              <div className="bg-gradient-to-r from-slate-900 via-emerald-950 to-slate-900 p-6 sm:p-7 text-white relative">
+            <div className="relative bg-white/95 backdrop-blur-md rounded-3xl border border-emerald-100 shadow-xl shadow-emerald-900/5 overflow-hidden flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:shadow-emerald-500/10 hover:border-emerald-300 group">
+              {/* Subtle background glow effect */}
+              <div className="absolute -top-16 -right-16 w-48 h-48 bg-gradient-to-br from-emerald-200/50 via-teal-100/30 to-transparent rounded-full blur-2xl pointer-events-none group-hover:scale-125 transition-transform duration-700" />
+              <div className="absolute top-1/2 -left-20 w-40 h-40 bg-gradient-to-tr from-amber-200/40 via-emerald-100/20 to-transparent rounded-full blur-2xl pointer-events-none" />
+
+              <div className="relative bg-gradient-to-br from-emerald-50/90 via-teal-50/60 to-white p-6 sm:p-7 border-b border-emerald-100/90">
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-emerald-300 shadow-inner group-hover:scale-105 transition-transform">
-                      <CalendarClock className="w-6 h-6 text-emerald-300" />
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-emerald-600 to-teal-700 text-white flex items-center justify-center shadow-md shadow-emerald-600/20 group-hover:scale-105 transition-transform">
+                      <CalendarClock className="w-6 h-6 text-white" />
                     </div>
                     <div>
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-full border border-emerald-400/20">
+                      <span className="text-[10px] font-extrabold uppercase tracking-wider text-emerald-800 bg-emerald-100/90 px-2.5 py-0.5 rounded-full border border-emerald-200">
                         Scheduled Milestones
                       </span>
-                      <h3 className="text-xl sm:text-2xl font-black text-white mt-1">
+                      <h3 className="text-xl sm:text-2xl font-black text-slate-900 mt-1">
                         Regular Chit Plan
                       </h3>
                     </div>
                   </div>
                 </div>
 
-                <p className="mt-3.5 text-xs text-emerald-100/90 leading-relaxed">
+                <p className="mt-3.5 text-xs text-slate-600 leading-relaxed font-medium">
                   Equal monthly installments with scheduled priority turns arranged in advance. Ideal for targeted life goals without bidding uncertainties.
                 </p>
 
-                <div className="mt-5 pt-4 border-t border-white/15 grid grid-cols-2 gap-2 text-xs">
-                  <div>
-                    <span className="text-emerald-200/80 block text-[11px]">Monthly Commitment</span>
-                    <strong className="text-base font-black text-white">₹{currentSlab.regularMonthly.toLocaleString('en-IN')}/mo</strong>
+                <div className="mt-5 pt-4 border-t border-emerald-100 grid grid-cols-2 gap-2 text-xs">
+                  <div className="bg-white/80 rounded-xl p-2.5 border border-emerald-100/80 shadow-xs">
+                    <span className="text-slate-500 block text-[11px] font-semibold">Monthly Commitment</span>
+                    <strong className="text-base font-black text-slate-900">₹{currentSlab.regularMonthly.toLocaleString('en-IN')}/mo</strong>
                   </div>
-                  <div>
-                    <span className="text-emerald-200/80 block text-[11px]">Turn Schedule</span>
-                    <strong className="text-base font-black text-emerald-300">Preset Turn Order</strong>
+                  <div className="bg-emerald-50/80 rounded-xl p-2.5 border border-emerald-100/80 shadow-xs">
+                    <span className="text-emerald-700 block text-[11px] font-semibold">Turn Schedule</span>
+                    <strong className="text-base font-black text-emerald-800">Preset Turn Order</strong>
                   </div>
                 </div>
               </div>
 
-              <div className="p-6 flex-1 flex flex-col justify-between space-y-5">
+              <div className="p-6 flex-1 flex flex-col justify-between space-y-5 relative z-10">
                 <div>
                   <h4 className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3">
                     Key Features
@@ -418,7 +430,7 @@ export const PlansSection: React.FC = () => {
                   </button>
 
                   <a href="#contact" className="block">
-                    <button className="w-full h-11 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md group-hover:scale-[1.01] cursor-pointer">
+                    <button className="w-full h-11 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-700 hover:to-teal-800 text-white font-bold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-emerald-600/20 group-hover:scale-[1.01] cursor-pointer">
                       Enrol in Regular Plan <ArrowRight className="w-4 h-4" />
                     </button>
                   </a>
@@ -430,37 +442,41 @@ export const PlansSection: React.FC = () => {
         </div>
 
         {/* Real Milestones & Family Growth Showcase Banner */}
-        <div className="mt-16 rounded-3xl overflow-hidden bg-gradient-to-r from-slate-900 via-[#0e1d38] to-slate-950 border border-slate-800 shadow-2xl text-white">
-          <div className="grid grid-cols-1 lg:grid-cols-12 items-center">
+        <div className="mt-16 rounded-3xl overflow-hidden bg-gradient-to-br from-[#FFFDF7] via-[#F8F1E5] to-[#F1E7D4] border border-[#D8AB4B]/35 shadow-xl text-slate-900 relative">
+          {/* Subtle background warm ambient glow */}
+          <div className="absolute -top-24 -left-24 w-80 h-80 bg-[#D8AB4B]/15 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-24 right-1/3 w-80 h-80 bg-[#064E3B]/10 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 items-center relative z-10">
             <div className="lg:col-span-7 p-6 sm:p-10 space-y-4">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-400/30 text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#064E3B]/10 text-[#064E3B] border border-[#064E3B]/20 text-xs font-bold uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-[#D8AB4B]" />
                 <span>Empowering Middle India</span>
               </div>
               
-              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white tracking-tight leading-tight">
+              <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black text-[#102C28] tracking-tight leading-tight">
                 Real Milestones. Real Families. <br className="hidden sm:inline" />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-emerald-300 to-cyan-300">
+                <span className="text-[#064E3B]">
                   Real Financial Freedom.
                 </span>
               </h3>
               
-              <p className="text-sm sm:text-base text-slate-300/90 leading-relaxed font-normal">
+              <p className="text-sm sm:text-base text-[#102C28]/80 leading-relaxed font-normal">
                 Whether you are opening your first retail showroom, expanding an established venture, or securing your child's university education, our transparent chit funds offer disciplined capital when banks say no.
               </p>
               
-              <div className="grid grid-cols-3 gap-2.5 sm:gap-3 pt-4 border-t border-white/10">
-                <div className="bg-white/5 rounded-2xl p-2.5 sm:p-3 border border-white/10 text-center">
-                  <span className="text-base sm:text-2xl font-black text-emerald-400 block">15,000+</span>
-                  <span className="text-[10px] sm:text-xs text-slate-400 font-medium">Homes Built</span>
+              <div className="grid grid-cols-3 gap-2.5 sm:gap-3 pt-4 border-t border-[#102C28]/10">
+                <div className="bg-white/90 rounded-2xl p-2.5 sm:p-3 border border-[#064E3B]/15 text-center shadow-xs">
+                  <span className="text-base sm:text-2xl font-black text-[#064E3B] block">15,000+</span>
+                  <span className="text-[10px] sm:text-xs text-slate-600 font-semibold">Homes Built</span>
                 </div>
-                <div className="bg-white/5 rounded-2xl p-2.5 sm:p-3 border border-white/10 text-center">
-                  <span className="text-base sm:text-2xl font-black text-cyan-400 block">35,000+</span>
-                  <span className="text-[10px] sm:text-xs text-slate-400 font-medium">Shops Expanded</span>
+                <div className="bg-white/90 rounded-2xl p-2.5 sm:p-3 border border-[#064E3B]/15 text-center shadow-xs">
+                  <span className="text-base sm:text-2xl font-black text-sky-700 block">35,000+</span>
+                  <span className="text-[10px] sm:text-xs text-slate-600 font-semibold">Shops Expanded</span>
                 </div>
-                <div className="bg-white/5 rounded-2xl p-2.5 sm:p-3 border border-white/10 text-center">
-                  <span className="text-base sm:text-2xl font-black text-amber-400 block">₹5,000 Cr+</span>
-                  <span className="text-[10px] sm:text-xs text-slate-400 font-medium">Safe Disbursals</span>
+                <div className="bg-white/90 rounded-2xl p-2.5 sm:p-3 border border-[#064E3B]/15 text-center shadow-xs">
+                  <span className="text-base sm:text-2xl font-black text-amber-700 block">₹5,000 Cr+</span>
+                  <span className="text-[10px] sm:text-xs text-slate-600 font-semibold">Safe Disbursals</span>
                 </div>
               </div>
             </div>
@@ -471,7 +487,7 @@ export const PlansSection: React.FC = () => {
                 alt="Families and Business Owners Celebrating Success with Jenista Chits" 
                 className="w-full h-full object-cover object-center scale-105 hover:scale-110 transition-transform duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-slate-900 via-transparent to-transparent opacity-85 lg:opacity-65 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t lg:bg-gradient-to-r from-[#F8F1E5]/70 via-transparent to-transparent opacity-80 pointer-events-none" />
             </div>
           </div>
         </div>
@@ -547,10 +563,10 @@ export const PlansSection: React.FC = () => {
             {/* Modal Header */}
             <div className={`p-6 sm:p-7 border-b text-white flex items-start justify-between ${
               selectedDetailScheme === 'FIXED' 
-                ? 'bg-gradient-to-r from-blue-900 to-slate-900 border-blue-800' 
+                ? 'bg-gradient-to-r from-blue-700 via-blue-800 to-sky-700 border-blue-600' 
                 : selectedDetailScheme === 'AUCTION'
-                  ? 'bg-gradient-to-r from-indigo-900 to-slate-900 border-indigo-800'
-                  : 'bg-gradient-to-r from-emerald-900 to-slate-900 border-emerald-800'
+                  ? 'bg-gradient-to-r from-indigo-700 via-purple-700 to-indigo-800 border-indigo-600'
+                  : 'bg-gradient-to-r from-emerald-700 via-teal-700 to-emerald-800 border-emerald-600'
             }`}>
               <div className="flex items-start gap-3.5">
                 <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center shrink-0">
