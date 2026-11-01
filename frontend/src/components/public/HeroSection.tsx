@@ -9,88 +9,115 @@ import {
 
 export const HeroSection: React.FC = () => {
   return (
-    <section className="relative w-full overflow-hidden bg-[#FAF6EE] sm:bg-gradient-to-b sm:from-[#FAF6EE] sm:via-[#FFFDF7] sm:to-[#F5EFE3] pt-1 sm:pt-3 pb-4 sm:pb-8">
-      {/* Hidden semantic heading for SEO & Accessibility */}
-      <div className="sr-only">
-        <h1>Plan Your Savings. Move Towards Your Goals.</h1>
-        <p>
-          Jenista Chit Funds: Explore chit plans designed around your financial goals, with clear installment details and a convenient way to track your progress.
-        </p>
-      </div>
-
-      {/* Main Container - Fitted seamlessly to the page width without square boxed margins */}
+    <section className="relative w-full overflow-hidden bg-[#FAF6EE] pt-2 sm:pt-4 pb-6 sm:pb-10">
       <div className="max-w-[1536px] mx-auto px-2 sm:px-4 lg:px-6">
         
-        {/* Full-width Panoramic Banner Wrapper */}
-        <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl shadow-[0_12px_40px_rgba(7,59,50,0.08)] border border-[#064E3B]/10 group bg-white">
+        {/* Full-width Panoramic Banner Canvas */}
+        <div className="relative w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-[#D8AB4B]/25 shadow-[0_12px_45px_rgba(7,59,50,0.09)] min-h-[500px] sm:min-h-[560px] lg:min-h-[600px] xl:min-h-[640px] flex items-center bg-[#FAF6EE]">
           
-          {/* Panoramic Graphic Asset */}
+          {/* Background Illustration: Clean panoramic artwork (no text, no duplicate logo, no flat buttons) */}
           <img 
-            src="/assets/hero_banner_full.jpg" 
-            alt="Jenista Chits - Plan Your Savings. Move Towards Your Goals. Explore Chit Plans & Enquire Now" 
-            className="w-full h-auto block object-cover select-none"
+            src="/assets/hero_clean_panoramic.jpg" 
+            alt="Financial chit savings with Jenista Chits" 
+            className="absolute inset-0 w-full h-full object-cover object-right sm:object-center select-none pointer-events-none"
+            loading="eager"
             width={1024}
             height={576}
-            loading="eager"
           />
 
-          {/* Precision Interactive Hotspots on Banner CTA Buttons (Desktop & Tablet) */}
-          <a
-            href="#plans"
-            className="absolute left-[5.4%] top-[65.6%] w-[18.8%] h-[7.3%] rounded-full z-20 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#D8AB4B] transition-all duration-200 hover:scale-[1.03] active:scale-[0.98] bg-white/0 hover:bg-white/10"
-            aria-label="Explore Chit Plans"
-            title="Explore Chit Plans"
-          >
-            <span className="sr-only">Explore Chit Plans</span>
-          </a>
+          {/* Soft Mobile & Tablet Legibility Gradient (Fade out on desktop) */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#FAF6EE]/95 via-[#FAF6EE]/85 to-[#FAF6EE]/30 sm:via-[#FAF6EE]/60 sm:to-transparent lg:from-transparent lg:via-transparent lg:to-transparent pointer-events-none" />
 
-          <a
-            href="#contact"
-            className="absolute left-[24.8%] top-[65.6%] w-[15.2%] h-[7.3%] rounded-full z-20 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-[#064E3B] transition-all duration-200 hover:scale-[1.03] active:scale-[0.98] bg-black/0 hover:bg-black/5"
-            aria-label="Enquire Now"
-            title="Enquire Now"
-          >
-            <span className="sr-only">Enquire Now</span>
-          </a>
-        </div>
+          {/* Real, Crisp HTML Typography & Interactive Elements on the Left */}
+          <div className="relative z-10 w-full px-5 sm:px-10 lg:px-14 py-8 sm:py-12 lg:py-16">
+            <div className="max-w-xl lg:max-w-2xl">
+              
+              {/* Compliance & Trust Pill Tag */}
+              <div className="inline-flex items-center gap-2 bg-white/90 backdrop-blur-md rounded-full px-4 py-1.5 border border-[#064E3B]/20 mb-5 shadow-xs">
+                <span className="flex h-2 w-2 rounded-full bg-[#064E3B] animate-pulse" />
+                <ShieldCheck className="w-3.5 h-3.5 text-[#064E3B]" />
+                <span className="text-[11px] sm:text-xs font-bold text-[#073B32] tracking-wide uppercase">
+                  Central Chit Funds Act, 1982 Regulated
+                </span>
+              </div>
 
-        {/* Mobile Action Controls (Rendered on smaller screens for instant finger touch) */}
-        <div className="sm:hidden mt-3 px-1 flex flex-col gap-2.5">
-          <div className="flex items-center gap-2.5">
-            <a href="#plans" className="flex-1">
-              <button 
-                type="button"
-                className="w-full h-11 px-3 text-xs font-bold text-white bg-[#064E3B] hover:bg-[#073B32] active:bg-[#043327] rounded-xl shadow-md flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-              >
-                <span>Explore Chit Plans</span>
-                <ArrowRight className="w-3.5 h-3.5 text-[#D8AB4B]" />
-              </button>
-            </a>
-            
-            <a href="#contact" className="flex-1">
-              <button 
-                type="button"
-                className="w-full h-11 px-3 text-xs font-bold text-[#064E3B] bg-white hover:bg-[#F8F1E5] active:bg-[#F0E6D2] border border-[#064E3B]/30 rounded-xl shadow-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer"
-              >
-                <span>Enquire Now</span>
-                <Mail className="w-3.5 h-3.5 text-[#064E3B]" />
-              </button>
-            </a>
+              {/* Crisp Page Headline with Elegant Handwritten Gold Script on 'Goals.' */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-[3.35rem] xl:text-[3.75rem] font-black text-[#102C28] tracking-tight leading-[1.12] mb-5">
+                Plan Your Savings. <br />
+                Move Towards Your{' '}
+                <span 
+                  className="text-[#C5922F] relative inline-block font-bold drop-shadow-xs"
+                  style={{ fontFamily: "'Caveat', cursive, sans-serif", fontSize: '1.2em' }}
+                >
+                  Goals.
+                </span>
+              </h1>
+
+              {/* Real HTML Supporting Text */}
+              <p className="text-sm sm:text-base lg:text-lg text-[#102C28]/85 max-w-xl leading-relaxed font-normal mb-8">
+                Explore chit plans designed around your financial goals, with clear installment details and a convenient way to track your progress.
+              </p>
+
+              {/* Realistic Tactile HTML Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 sm:gap-4">
+                
+                {/* 1. Explore Chit Plans - Realistic Deep Emerald Pill Button */}
+                <a href="#plans" className="w-full sm:w-auto">
+                  <button 
+                    type="button"
+                    className="group/btn relative h-13 sm:h-14 px-8 rounded-full bg-gradient-to-b from-[#095742] via-[#064E3B] to-[#043D2E] text-white font-extrabold text-sm sm:text-base tracking-wide border border-[#0D7257]/70 shadow-[inset_0_1px_1px_rgba(255,255,255,0.4),0_8px_20px_-4px_rgba(6,78,59,0.5),0_2px_4px_rgba(6,78,59,0.25)] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.6),0_12px_28px_-4px_rgba(6,78,59,0.65),0_4px_8px_rgba(6,78,59,0.35)] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.4)] transition-all duration-200 flex items-center justify-center gap-2.5 w-full sm:w-auto cursor-pointer"
+                  >
+                    {/* Subtle top glossy sheen */}
+                    <span className="absolute top-0 left-4 right-4 h-1/2 bg-gradient-to-b from-white/20 to-transparent rounded-t-full pointer-events-none" />
+                    <span>Explore Chit Plans</span>
+                    <ArrowRight className="w-4 h-4 text-[#E6C675] group-hover/btn:translate-x-1 transition-transform duration-200" />
+                  </button>
+                </a>
+
+                {/* 2. Enquire Now - Realistic Porcelain Glass Pill Button */}
+                <a href="#contact" className="w-full sm:w-auto">
+                  <button 
+                    type="button"
+                    className="group/btn relative h-13 sm:h-14 px-8 rounded-full bg-gradient-to-b from-white via-[#FCFBF8] to-[#F3EEE3] text-[#102C28] font-black text-sm sm:text-base border-2 border-[#102C28]/85 hover:border-[#064E3B] hover:text-[#064E3B] shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_6px_18px_-3px_rgba(16,44,40,0.15),0_2px_4px_rgba(0,0,0,0.06)] hover:shadow-[inset_0_1px_1px_rgba(255,255,255,0.9),0_10px_24px_-3px_rgba(16,44,40,0.22)] hover:-translate-y-0.5 active:translate-y-0.5 active:shadow-[inset_0_2px_4px_rgba(0,0,0,0.15)] transition-all duration-200 flex items-center justify-center gap-2.5 w-full sm:w-auto cursor-pointer"
+                  >
+                    <span>Enquire Now</span>
+                    <Mail className="w-4 h-4 text-[#102C28] group-hover/btn:text-[#064E3B] transition-colors" />
+                  </button>
+                </a>
+              </div>
+
+              {/* Realistic Trust Pillars with Crisp Vector Icons */}
+              <div className="mt-9 pt-6 border-t border-[#102C28]/15 flex flex-wrap items-center gap-y-3 sm:gap-x-6 text-xs sm:text-sm font-bold text-[#102C28]">
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-[#064E3B]/10 flex items-center justify-center text-[#064E3B] shrink-0">
+                    <ShieldCheck className="w-4 h-4" />
+                  </div>
+                  <span>Trusted & Transparent</span>
+                </div>
+
+                <div className="hidden sm:block w-px h-5 bg-[#102C28]/20" />
+
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-[#064E3B]/10 flex items-center justify-center text-[#064E3B] shrink-0">
+                    <Users className="w-4 h-4" />
+                  </div>
+                  <span>Customer Focused</span>
+                </div>
+
+                <div className="hidden sm:block w-px h-5 bg-[#102C28]/20" />
+
+                <div className="flex items-center gap-2">
+                  <div className="w-6 h-6 rounded-lg bg-[#064E3B]/10 flex items-center justify-center text-[#064E3B] shrink-0">
+                    <TrendingUp className="w-4 h-4" />
+                  </div>
+                  <span>Grow Your Savings</span>
+                </div>
+              </div>
+
+            </div>
           </div>
 
-          <div className="flex items-center justify-between text-[11px] font-bold text-[#102C28]/80 px-1 pt-0.5">
-            <span className="flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#064E3B]" /> Trusted & Transparent
-            </span>
-            <span className="flex items-center gap-1">
-              <Users className="w-3.5 h-3.5 text-[#064E3B]" /> Customer Focused
-            </span>
-            <span className="flex items-center gap-1">
-              <TrendingUp className="w-3.5 h-3.5 text-[#064E3B]" /> Grow Savings
-            </span>
-          </div>
         </div>
-
       </div>
     </section>
   );
